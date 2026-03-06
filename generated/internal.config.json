@@ -1,0 +1,62 @@
+{
+  "version": "3.0.0-alpha.13",
+  "name": "kuru-prediction-markets-indexer",
+  "description": "Indexes prediction markets created via the Kuru PredictionMarketFactory on Monad. Tracks market creation, lifecycle (Mint/Burn/Settle), and resolution (Resolved/Finalized/Expired/Challenge) events to build a live, queryable registry of all prediction markets.\n",
+  "evm": {
+    "chains": {
+      "monad": {
+        "id": 143,
+        "startBlock": 59474174,
+        "hypersync": "https://143.hypersync.xyz",
+        "rpcs": [
+          {
+            "url": "https://rpc.monad.xyz",
+            "for": "fallback"
+          }
+        ]
+      }
+    },
+    "contracts": {
+      "PredictionMarket": {
+        "abi": [{"type":"event","name":"Burn","inputs":[{"name":"user","type":"address","indexed":true},{"name":"amount","type":"uint256","indexed":false}],"anonymous":false},{"type":"event","name":"ChallengeResolved","inputs":[{"name":"fallbackResolver","type":"address","indexed":true},{"name":"finalOutcome","type":"uint8","indexed":true},{"name":"slashedParty","type":"address","indexed":false},{"name":"slashedAmount","type":"uint256","indexed":false}],"anonymous":false},{"type":"event","name":"ChallengeSubmitted","inputs":[{"name":"challenger","type":"address","indexed":true},{"name":"proposedOutcome","type":"uint8","indexed":true},{"name":"bondAmount","type":"uint256","indexed":false}],"anonymous":false},{"type":"event","name":"Expired","inputs":[{"name":"defaultOutcome","type":"uint8","indexed":true}],"anonymous":false},{"type":"event","name":"Finalized","inputs":[{"name":"outcome","type":"uint8","indexed":true}],"anonymous":false},{"type":"event","name":"Mint","inputs":[{"name":"user","type":"address","indexed":true},{"name":"amount","type":"uint256","indexed":false}],"anonymous":false},{"type":"event","name":"Resolved","inputs":[{"name":"resolver","type":"address","indexed":true},{"name":"outcome","type":"uint8","indexed":true},{"name":"evidenceUri","type":"string","indexed":false}],"anonymous":false},{"type":"event","name":"Settle","inputs":[{"name":"user","type":"address","indexed":true},{"name":"winningOutcome","type":"uint8","indexed":true},{"name":"amount","type":"uint256","indexed":false}],"anonymous":false}],
+        "handler": "src/EventHandlers.ts",
+        "events": [
+          {
+            "event": "Burn(address indexed user, uint256 amount)"
+          },
+          {
+            "event": "ChallengeResolved(address indexed fallbackResolver, uint8 indexed finalOutcome, address slashedParty, uint256 slashedAmount)"
+          },
+          {
+            "event": "ChallengeSubmitted(address indexed challenger, uint8 indexed proposedOutcome, uint256 bondAmount)"
+          },
+          {
+            "event": "Expired(uint8 indexed defaultOutcome)"
+          },
+          {
+            "event": "Finalized(uint8 indexed outcome)"
+          },
+          {
+            "event": "Mint(address indexed user, uint256 amount)"
+          },
+          {
+            "event": "Resolved(address indexed resolver, uint8 indexed outcome, string evidenceUri)"
+          },
+          {
+            "event": "Settle(address indexed user, uint8 indexed winningOutcome, uint256 amount)"
+          }
+        ]
+      },
+      "PredictionMarketFactory": {
+        "abi": [{"type":"event","name":"MarketCreated","inputs":[{"name":"market","type":"address","indexed":true},{"name":"creator","type":"address","indexed":true},{"name":"resolver","type":"address","indexed":true},{"name":"collateralToken","type":"address","indexed":false},{"name":"numOutcomes","type":"uint8","indexed":false},{"name":"outcomeTokens","type":"address[]","indexed":false},{"name":"orderbooks","type":"address[]","indexed":false},{"name":"resolutionBlock","type":"uint256","indexed":false},{"name":"allowChallenge","type":"bool","indexed":false},{"name":"insuranceBond","type":"uint256","indexed":false},{"name":"metadata","type":"bytes","indexed":false}],"anonymous":false}],
+        "handler": "src/EventHandlers.ts",
+        "events": [
+          {
+            "event": "MarketCreated(address indexed market, address indexed creator, address indexed resolver, address collateralToken, uint8 numOutcomes, address[] outcomeTokens, address[] orderbooks, uint256 resolutionBlock, bool allowChallenge, uint256 insuranceBond, bytes metadata)"
+          }
+        ]
+      }
+    },
+    "addressFormat": "checksum"
+  }
+}

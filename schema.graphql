@@ -1,0 +1,53 @@
+# ---------------------------------------------------------------------------
+# Market — one record per deployed PredictionMarket.
+# ---------------------------------------------------------------------------
+type Market @entity {
+  id: ID!                          # Market contract address (lowercase)
+  factory: String!                 # Factory address that created this market
+  creator: String!                 # Address that called createMarket
+  resolver: String!                # Designated resolver address
+  collateralToken: String!         # ERC20 collateral token address
+  numOutcomes: Int!                # Number of outcome tokens (≥ 2)
+
+  # JSON-encoded arrays — e.g. '["0xabc...","0xdef..."]'
+  outcomeTokens: String!           # Outcome token addresses in outcome-index order
+  orderbooks: String!              # Orderbook addresses in outcome-index order
+
+  resolutionBlock: BigInt!         # Block at or after which resolver may call resolve()
+  allowChallenge: Boolean!         # Whether the challenge mechanism is enabled
+  insuranceBond: BigInt!           # Collateral locked by resolver (0 if no challenge)
+  metadata: String!                # Hex-encoded bytes (e.g. IPFS CID or JSON)
+
+  # Lifecycle status: "ACTIVE" | "RESOLVED" | "FINALIZED" | "EXPIRED"
+  status: String!
+  resolvedOutcome: Int             # Null until resolved; 0-indexed winning outcome
+  resolvedBlock: BigInt            # Block at which resolve() was called
+
+  # Collateral accounting (updated on Mint / Burn / Settle)
+  totalCollateral: BigInt!
+
+  # Challenge fields (null if no challenge filed)
+  challenger: String
+  challengerBond: BigInt
+  challengerProposedOutcome: Int
+  # "NONE" | "CHALLENGED" | "SETTLED"
+  challengeStatus: String!
+
+  createdAt: BigInt!               # Unix timestamp of MarketCreated event
+  createdAtBlock: BigInt!          # Block number of MarketCreated event
+}
+
+# ---------------------------------------------------------------------------
+# MarketActivity — per-event activity log for Mint, Burn, and Settle actions.
+# ---------------------------------------------------------------------------
+type MarketActivity @entity {
+  id: ID!                          # "{type}-{txHash}-{logIndex}"
+  market: Market!                  # Back-reference to the owning market
+  # "Mint" | "Burn" | "Settle"
+  type: String!
+  user: String!                    # Address that performed the action
+  amount: BigInt!                  # Token / collateral amount
+  outcome: Int                     # Winning outcome index (Settle only; null otherwise)
+  timestamp: BigInt!
+  blockNumber: BigInt!
+}

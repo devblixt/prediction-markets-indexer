@@ -1,0 +1,77 @@
+[
+  {
+    "type": "event",
+    "name": "Mint",
+    "inputs": [
+      { "name": "user", "type": "address", "indexed": true },
+      { "name": "amount", "type": "uint256", "indexed": false }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "Burn",
+    "inputs": [
+      { "name": "user", "type": "address", "indexed": true },
+      { "name": "amount", "type": "uint256", "indexed": false }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "Settle",
+    "inputs": [
+      { "name": "user", "type": "address", "indexed": true },
+      { "name": "winningOutcome", "type": "uint8", "indexed": true },
+      { "name": "amount", "type": "uint256", "indexed": false }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "Resolved",
+    "inputs": [
+      { "name": "resolver", "type": "address", "indexed": true },
+      { "name": "outcome", "type": "uint8", "indexed": true },
+      { "name": "evidenceUri", "type": "string", "indexed": false }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "Finalized",
+    "inputs": [
+      { "name": "outcome", "type": "uint8", "indexed": true }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "Expired",
+    "inputs": [
+      { "name": "defaultOutcome", "type": "uint8", "indexed": true }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "ChallengeSubmitted",
+    "inputs": [
+      { "name": "challenger", "type": "address", "indexed": true },
+      { "name": "proposedOutcome", "type": "uint8", "indexed": true },
+      { "name": "bondAmount", "type": "uint256", "indexed": false }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "ChallengeResolved",
+    "inputs": [
+      { "name": "fallbackResolver", "type": "address", "indexed": true },
+      { "name": "finalOutcome", "type": "uint8", "indexed": true },
+      { "name": "slashedParty", "type": "address", "indexed": false },
+      { "name": "slashedAmount", "type": "uint256", "indexed": false }
+    ],
+    "anonymous": false
+  }
+]

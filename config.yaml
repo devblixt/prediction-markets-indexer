@@ -1,0 +1,41 @@
+name: kuru-prediction-markets-indexer
+description: >
+  Indexes prediction markets created via the Kuru PredictionMarketFactory on
+  Monad. Tracks market creation, lifecycle (Mint/Burn/Settle), and resolution
+  (Resolved/Finalized/Expired/Challenge) events to build a live, queryable
+  registry of all prediction markets.
+
+contracts:
+  # PredictionMarketFactory — fixed address; emits MarketCreated for every new market.
+  - name: PredictionMarketFactory
+    abi_file_path: abis/PredictionMarketFactory.json
+    handler: src/EventHandlers.ts
+    events:
+      - event: MarketCreated(address indexed market, address indexed creator, address indexed resolver, address collateralToken, uint8 numOutcomes, address[] outcomeTokens, address[] orderbooks, uint256 resolutionBlock, bool allowChallenge, uint256 insuranceBond, bytes metadata)
+
+  # PredictionMarket — no fixed address; dynamically registered from MarketCreated events.
+  - name: PredictionMarket
+    abi_file_path: abis/PredictionMarket.json
+    handler: src/EventHandlers.ts
+    events:
+      - event: Mint(address indexed user, uint256 amount)
+      - event: Burn(address indexed user, uint256 amount)
+      - event: Settle(address indexed user, uint8 indexed winningOutcome, uint256 amount)
+      - event: Resolved(address indexed resolver, uint8 indexed outcome, string evidenceUri)
+      - event: Finalized(uint8 indexed outcome)
+      - event: Expired(uint8 indexed defaultOutcome)
+      - event: ChallengeSubmitted(address indexed challenger, uint8 indexed proposedOutcome, uint256 bondAmount)
+      - event: ChallengeResolved(address indexed fallbackResolver, uint8 indexed finalOutcome, address slashedParty, uint256 slashedAmount)
+
+chains:
+  - id: 143  # Monad mainnet
+    start_block: 59474174
+    rpc: ${ENVIO_MONAD_RPC_URL}
+
+    contracts:
+      - name: PredictionMarketFactory
+        address:
+          - "0x825daef3595fb82ccb0d63fda05189d8884e083f"
+
+      - name: PredictionMarket
+        # address intentionally omitted — populated at runtime via dynamic registration

@@ -1,0 +1,20 @@
+[
+  {
+    "type": "event",
+    "name": "MarketCreated",
+    "inputs": [
+      { "name": "market", "type": "address", "indexed": true },
+      { "name": "creator", "type": "address", "indexed": true },
+      { "name": "resolver", "type": "address", "indexed": true },
+      { "name": "collateralToken", "type": "address", "indexed": false },
+      { "name": "numOutcomes", "type": "uint8", "indexed": false },
+      { "name": "outcomeTokens", "type": "address[]", "indexed": false },
+      { "name": "orderbooks", "type": "address[]", "indexed": false },
+      { "name": "resolutionBlock", "type": "uint256", "indexed": false },
+      { "name": "allowChallenge", "type": "bool", "indexed": false },
+      { "name": "insuranceBond", "type": "uint256", "indexed": false },
+      { "name": "metadata", "type": "bytes", "indexed": false }
+    ],
+    "anonymous": false
+  }
+]
