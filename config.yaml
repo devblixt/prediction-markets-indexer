@@ -30,7 +30,7 @@ contracts:
 chains:
   - id: 143  # Monad mainnet
     start_block: 59474174
-    rpc: ${ENVIO_MONAD_RPC_URL}
+    rpc: https://rpc.monad.xyz
 
     contracts:
       - name: PredictionMarketFactory
